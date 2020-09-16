@@ -14,13 +14,17 @@ export class AppService {
       const shop = result[iterator];
       const distance = this.getDistance(shop.location.lat, shop.location.long, origin.latitude, origin.longitude);
       shop.distance = distance;
+      shop.rating = shop.rating ? shop.rating : 0;
       shops.push(shop);
     }
     shops.sort(function(a, b) {
       return a.distance - b.distance;
     });
-
-    return shops[0];
+    const nearestShops = shops.slice(0, 5);
+    nearestShops.sort(function(a, b) {
+      return b.rating - a.rating;
+    });
+    return nearestShops[0];
 
   }
 getDistance(lat1, lon1, lat2, lon2) {
